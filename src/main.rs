@@ -4,9 +4,8 @@ fn main() {
     let file_path  = &args[1];
     match read_file(file_path) {
         Ok(contents) => {
-            // println!("File contents:\n{}", contents);
-            let lmao = tokenize(&contents);
-            println!("{:#?}", lmao);
+            // let lmao = tokenize(&contents);
+            println!("{:#?}", tokenize(&contents));
         }
         Err(error) => {
             eprintln!("Error: {}", error);
@@ -48,7 +47,6 @@ fn tokenize(source_code: &str) -> std::vec::Vec<Token> {
     let mut tokens: Vec<Token> = Vec::new();
     let src = source_code;
     let mut buff_arr_src: Vec<char> = src.chars().collect();
-    // println!("{:?} " , buff_arr_src);
     while !buff_arr_src.is_empty() {
         let c = buff_arr_src[0];
         match c {
@@ -60,7 +58,5 @@ fn tokenize(source_code: &str) -> std::vec::Vec<Token> {
         }
         buff_arr_src.remove(0);
     }
-    // println!("lmao{:?}" , buff_arr_src);
-
     tokens
 }
