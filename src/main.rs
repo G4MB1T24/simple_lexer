@@ -28,6 +28,7 @@ enum TokenType {
     Equals,
     OpenParen,
     CloseParen,
+    Semicolon
 }
 #[allow(dead_code)]
 #[derive(Debug)]
@@ -45,8 +46,7 @@ fn give_token(t_type: TokenType, t_value: char) -> Token {
 
 fn tokenize(source_code: &str) -> std::vec::Vec<Token> {
     let mut tokens: Vec<Token> = Vec::new();
-    let src = source_code;
-    let mut buff_arr_src: Vec<char> = src.chars().collect();
+    let mut buff_arr_src: Vec<char> = source_code.chars().collect();
     while !buff_arr_src.is_empty() {
         let c = buff_arr_src[0];
         match c {
@@ -54,6 +54,7 @@ fn tokenize(source_code: &str) -> std::vec::Vec<Token> {
             ')' => tokens.push(give_token(TokenType::CloseParen, c)),
             '+' | '-' | '*' | '/' => tokens.push(give_token(TokenType::BinaryOperator, c)),
             '=' => tokens.push(give_token(TokenType::Equals, c)),
+            ';' => tokens.push(give_token(TokenType::Semicolon , c)),
             _ => {} // Ignore other characters
         }
         buff_arr_src.remove(0);
