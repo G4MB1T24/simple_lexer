@@ -30,8 +30,6 @@ enum TokenType {
     Semicolon,
     Alphanumeric,
     Numeric,
-    Identifier,
-    Let,
 }
 
 #[allow(dead_code)]
@@ -56,25 +54,24 @@ fn tokenize(source_code: &str) -> Vec<Token> {
             '+' | '-' | '*' | '/' => tokens.push(give_token(TokenType::BinaryOperator, c.to_string())),
             '=' => tokens.push(give_token(TokenType::Equals, c.to_string())),
             ';' => tokens.push(give_token(TokenType::Semicolon, c.to_string())),
+            '0'..='9' =>{
+                let mut num = String::new();
+                while !buff_arr_src.is_empty() && buff_arr_src[0].is_digit(10) {
+                    num.push(buff_arr_src.remove(0));
+                }
+                tokens.push(give_token(TokenType::Numeric, num));
+                continue;
+            }
+            'a'..='z' | 'A'..='Z' =>{
+                let mut iden = String::new();
+                while !buff_arr_src.is_empty() && buff_arr_src[0].is_alphabetic() {
+                    iden.push(buff_arr_src.remove(0));
+                }
+                tokens.push(give_token(TokenType::Alphanumeric , iden));
+                continue;
+            }
             _ => {} // Ignore other characters
         }
-        if c.is_digit(10) {
-            let mut num = String::new();
-            while !buff_arr_src.is_empty() && buff_arr_src[0].is_digit(10) {
-                num.push(buff_arr_src.remove(0));
-            }
-            tokens.push(give_token(TokenType::Numeric, num));
-            continue;
-        }
-        else if c.is_alphabetic() {
-            let mut iden = String::new();
-            while !buff_arr_src.is_empty() && buff_arr_src[0].is_alphabetic() {
-                iden.push(buff_arr_src.remove(0));
-            }
-            tokens.push(give_token(TokenType::Alphanumeric , iden));
-            continue;
-        }
-
         buff_arr_src.remove(0);
     }
     tokens
